@@ -3,9 +3,9 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>cz.zerog</groupId>
-  <artifactId>jCSD30</artifactId>
+  <artifactId>jSCD30</artifactId>
   <version>1.0-SNAPSHOT</version>
-  <name>jCSD30</name>
+  <name>jSCD30</name>
   <packaging>jar</packaging>
   <url></url>
 

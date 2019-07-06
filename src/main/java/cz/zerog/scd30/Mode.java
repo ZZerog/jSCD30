@@ -1,12 +1,10 @@
-package cz.zerog.csd30;
-
-import java.io.IOException;
+package cz.zerog.scd30;
 
 public interface Mode {
 
-    void setInterval(int interval) throws CsdException;
+    void setInterval(int interval);
 
-    int getInterval() throws CsdException;
+    int getInterval();
 
     boolean isDataReady();
 
@@ -14,9 +12,25 @@ public interface Mode {
 
     String getFirmwareVersion();
 
-    void start();
+    void start(int pressureCompensation);
 
     void stop();
+
+    void selfCalibration(boolean active);
+
+    boolean isSelfCalibration();
+
+    void setRecalibrationValue(int value);
+
+    void setTemperatureOffset(int offset);
+
+    int getTemperatureOffset();
+
+    void setAltitudeCompensation(int altitudeLevel)  ;
+
+    int getAltitudeCompensation();
+
+    void softReset();
 
     static String getHumanMessage(byte[] bytes) {
 

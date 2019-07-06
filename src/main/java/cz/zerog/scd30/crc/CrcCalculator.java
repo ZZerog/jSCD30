@@ -1,4 +1,4 @@
-package cz.zerog.csd30.crc;
+package cz.zerog.scd30.crc;
 
 /**
  * Created by anthony on 11.05.2017.

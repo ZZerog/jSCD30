@@ -1,4 +1,4 @@
-package cz.zerog.csd30;
+package cz.zerog.scd30;
 
 
 public class CsdException extends RuntimeException {

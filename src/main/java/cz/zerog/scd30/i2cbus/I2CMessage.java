@@ -1,10 +1,10 @@
-package cz.zerog.csd30.i2cbus;
+package cz.zerog.scd30.i2cbus;
 
 import com.pi4j.io.i2c.I2CDevice;
-import cz.zerog.csd30.CsdException;
-import cz.zerog.csd30.Mode;
-import cz.zerog.csd30.crc.AlgoParams;
-import cz.zerog.csd30.crc.CrcCalculator;
+import cz.zerog.scd30.CsdException;
+import cz.zerog.scd30.Mode;
+import cz.zerog.scd30.crc.AlgoParams;
+import cz.zerog.scd30.crc.CrcCalculator;
 
 import java.io.IOException;
 
