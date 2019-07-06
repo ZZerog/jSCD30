@@ -1,6 +1,6 @@
 # jSCD30
 
-<img align="right" width="300" height="200" src="https://cz.mouser.com/images/marketingid/2018/df/187534792_Sensirion_SCD30SensorModule.jpg">Simple java driver for the SCD30 CO2 sensor 
+<img align="right" width="300" height="200" src="https://cz.mouser.com/images/marketingid/2018/df/187534792_Sensirion_SCD30SensorModule.jpg">Simple java **RaspberryPi** driver for the **SCD30** CO2 sensor. 
 
 ### TODO LIST
 - [ ] Code completion
@@ -12,7 +12,7 @@
 
 ### Getting Started
 
-Simple java driver for the **SCD30** CO2 (temparature and humidity) sensor. Is tested on RaspberryPi B+ and uses the I2C BUS.
+Simple java driver for the **SCD30** CO2 (temparature and humidity) sensor. Is tested on **RaspberryPi 3B+** and uses the I2C BUS.
 
 ### Dependencies
 * www.pi4j.com
