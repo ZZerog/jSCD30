@@ -71,7 +71,7 @@ public class I2CMode implements Mode {
 
         try {
             message.exec(i2cDevice);
-            return message.getShort();
+            return message.getNextShort();
 
         } catch (IOException e) {
             throw new CsdException(e);
@@ -91,7 +91,7 @@ public class I2CMode implements Mode {
 
         try {
             message.exec(i2cDevice);
-            return message.getShort()==1;
+            return message.getNextShort()==1;
         } catch (IOException e) {
             throw new CsdException(e);
         }
@@ -125,7 +125,7 @@ public class I2CMode implements Mode {
         I2CMessage message = Factory.readMessage(FIRMWARE);
         try {
             message.exec(i2cDevice);
-            short v = message.getShort();
+            short v = message.getNextShort();
             return Integer.toHexString((v >> 2) & 0xFF)+"."
                     + Integer.toHexString(v & 0x00FF);
         } catch (IOException e) {
@@ -182,7 +182,7 @@ public class I2CMode implements Mode {
         I2CMessage message = Factory.readMessage(SELF_CALIBRATION);
         try {
             message.exec(i2cDevice);
-            return message.getShort()==1;
+            return message.getNextShort()==1;
         } catch (IOException e) {
             throw new CsdException(e);
         }
@@ -230,7 +230,7 @@ public class I2CMode implements Mode {
         I2CMessage message = Factory.readMessage(TEMP_OFFSET);
         try {
             message.exec(i2cDevice);
-            return message.getShort();
+            return message.getNextShort();
         } catch (IOException e) {
             throw new CsdException(e);
         }
@@ -259,7 +259,7 @@ public class I2CMode implements Mode {
          I2CMessage message = Factory.readMessage(ALTITUDE);
         try {
             message.exec(i2cDevice);
-            return message.getShort();
+            return message.getNextShort();
         } catch (IOException e) {
             throw new CsdException(e);
         }
@@ -290,8 +290,8 @@ public class I2CMode implements Mode {
      * @return float representation of int.
      */
     private float getAsFloat(I2CMessage message) {
-        short a = message.getShort();
-        short b = message.getShort();
+        short a = message.getNextShort();
+        short b = message.getNextShort();
 
         //System.out.println(Integer.toHexString(a));
         //System.out.println(Integer.toHexString(b));

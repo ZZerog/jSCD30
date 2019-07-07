@@ -10,19 +10,28 @@ import java.io.IOException;
 
 public class I2CMessage {
 
-    private CrcCalculator crc8 = new CrcCalculator(new AlgoParams("CRC-8", 8, 0x31, 0xFF, false, false, 0x00, 0xF4));
+    private final CrcCalculator crc8 = new CrcCalculator(new AlgoParams("CRC-8", 8, 0x31, 0xFF, false, false, 0x00, 0xF4));
 
-    private byte[] write = new byte[5];
-    private int writeLen = 2;
+    private final byte[] write = new byte[5]; //buffer with maximal length
+    private int writeLen = 2; //how many bytes will be write into i2c device
 
-    private byte read[] = null;
+    private byte read[] = null; //read buffer
 
-    private int writeLoad;
-    private short message;
+    private final int writeLoad; //parameter
+    private final short message; //address
 
+    //index if next short result
     private int resultIndex = 0;
 
 
+    /**
+     * Private constructor. Use Factory inner class instead.
+     *
+     * @see Factory
+     * @param message address
+     * @param load parameter
+     * @param responseLength
+     */
     private I2CMessage(short message, int load, int responseLength) {
         this.message = message;
         this.writeLoad = load;
@@ -32,10 +41,24 @@ public class I2CMessage {
         }
     }
 
+    /**
+     * Private constructor. Use Factory inner class instead.
+     *
+     * @see Factory
+     * @param message address
+     */
     private I2CMessage(short message) {
         this(message, -1, -1);
     }
 
+    /**
+     * Execute i2c read/write operation.
+     * If command has a response, data is saved into read buffer
+     * and crc8 tested.
+     *
+     * @param i2cDevice
+     * @throws IOException
+     */
     void exec(I2CDevice i2cDevice) throws IOException {
 
         //build cmd
@@ -48,27 +71,43 @@ public class I2CMessage {
             //if request has parameter
             if(writeLoad>=0) {
                 writeLen = 5;
-                System.out.println("writeload = "+writeLoad);
+                //System.out.println("write load = "+writeLoad);
                 write[2] = (byte) (writeLoad >> 8);
                 write[3] = (byte) (writeLoad);
                 write[4] = (byte) crc8.calc(write, 2, 2);
             }
 
-            System.out.println("Write 1: "+Mode.getHumanMessage(write));
+            //System.out.println("Write 1: "+Mode.getHumanMessage(write));
             i2cDevice.write(write, 0, writeLen);
         }
         //reading something
         else {
-            System.out.println("Write 2: "+Mode.getHumanMessage(write));
+            //System.out.println("Write 2: "+Mode.getHumanMessage(write));
             i2cDevice.read(write, 0, writeLen, read, 0, read.length);
-            System.out.println("READ: "+Mode.getHumanMessage(read));
+            //System.out.println("READ: "+Mode.getHumanMessage(read));
             crcCheck(read);
         }
     }
 
-    private boolean crcCheck(byte[] buffer) {
 
-        System.out.println("crcCheck: "+buffer.length);
+    /**
+     * Return next short from read buffer.
+     * @return If no next short, -1 is returned
+     */
+    short getNextShort() {
+        return getShortResult(read);
+    }
+
+    /**
+     * Test byte buffer if every third byte is crc8 of previous two.
+     *
+     * @param buffer input buffer
+     * @return true if a crc is correct through whole buffer otherwise false
+     * @throws CsdException when crc8 is not correct!
+     */
+    private void crcCheck(byte[] buffer) {
+
+        //System.out.println("crcCheck: "+buffer.length);
 
         for (int i = 0; i < buffer.length; i+=3) {
             if(!(crc8.calc(buffer,i,2) == (buffer[i+2] & 0xFF))) {
@@ -80,9 +119,14 @@ public class I2CMessage {
                 throw new CsdException("CRC is not correct! Data: "+input+". Expected: "+expected+", Was:"+was);
             }
         }
-        return true;
     }
 
+    /**
+     * Join buffer into short.
+     *
+     * @param buffer
+     * @return short value
+     */
     private short getShortResult(byte[] buffer) {
 
         if (resultIndex < buffer.length) {
@@ -94,15 +138,6 @@ public class I2CMessage {
         }
 
         return -1;
-    }
-
-
-    short getShort() {
-        return getShortResult(read);
-    }
-
-    boolean isCorrect() {
-        return true;
     }
 
 
@@ -119,36 +154,13 @@ public class I2CMessage {
             return new I2CMessage(message);
         }
 
-        public static I2CMessage readMessage(short message) {
+        static I2CMessage readMessage(short message) {
             return new I2CMessage(message, -1, 3);
         }
 
-        public static I2CMessage readDataMessage(short message) {
+        static I2CMessage readDataMessage(short message) {
             return new I2CMessage(message, -1, 18);
         }
-    }
-
-    public static void main(String[] args) {
-        short message = (short) 0x4600;
-        int writeLoad =  0x0003;
-
-        CrcCalculator crc8 = new CrcCalculator(new AlgoParams("CRC-8", 8, 0x31, 0xFF, false, false, 0x00, 0xF4));
-
-        byte[] write = new byte[5];
-
-        //build cmd
-        write[0] = (byte) (message >> 8);
-        write[1] = (byte) message;
-
-        write[2] = (byte) (writeLoad >> 8);
-        write[3] = (byte) (writeLoad);
-        write[4] = (byte) crc8.calc(write, 2, 2);
-
-        System.out.println(Integer.toHexString(write[0] & 0xFF));
-        System.out.println(Integer.toHexString(write[1] & 0xFF));
-        System.out.println(Integer.toHexString(write[2] & 0xFF));
-        System.out.println(Integer.toHexString(write[3] & 0xFF));
-        System.out.println(Integer.toHexString(write[4] & 0xFF));
     }
 
 }
