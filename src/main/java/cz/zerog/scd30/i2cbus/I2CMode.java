@@ -3,7 +3,7 @@ package cz.zerog.scd30.i2cbus;
 import com.pi4j.io.i2c.I2CBus;
 import com.pi4j.io.i2c.I2CDevice;
 import com.pi4j.io.i2c.I2CFactory;
-import cz.zerog.scd30.CsdException;
+import cz.zerog.scd30.ScdException;
 import cz.zerog.scd30.Mode;
 import cz.zerog.scd30.i2cbus.I2CMessage.Factory;
 
@@ -47,15 +47,15 @@ public class I2CMode implements Mode {
      * Sets the interval used by the SCD30 sensor to measure in continuous measurement mode.
      *
      * @param interval
-     * @throws CsdException
+     * @throws ScdException
      */
     @Override
-    public void setInterval(int interval) throws CsdException {
+    public void setInterval(int interval) throws ScdException {
         try {
             I2CMessage message = Factory.writeMessage(INTERVAL, interval);
             message.exec(i2cDevice);
         } catch (IOException e) {
-            throw new CsdException(e);
+            throw new ScdException(e);
         }
     }
 
@@ -65,7 +65,7 @@ public class I2CMode implements Mode {
      * @throws IOException
      */
     @Override
-    public int getInterval() throws CsdException {
+    public int getInterval() throws ScdException {
 
         I2CMessage message = Factory.readMessage(INTERVAL);
 
@@ -74,7 +74,7 @@ public class I2CMode implements Mode {
             return message.getNextShort();
 
         } catch (IOException e) {
-            throw new CsdException(e);
+            throw new ScdException(e);
         }
     }
 
@@ -83,17 +83,17 @@ public class I2CMode implements Mode {
      * if a measurement can be read from the sensor’s buffer.
      *
      * @return true if so otherwise false
-     * @throws CsdException
+     * @throws ScdException
      */
     @Override
-    public boolean isDataReady() throws CsdException {
+    public boolean isDataReady() throws ScdException {
         I2CMessage message = Factory.readMessage(DATA_READY);
 
         try {
             message.exec(i2cDevice);
             return message.getNextShort()==1;
         } catch (IOException e) {
-            throw new CsdException(e);
+            throw new ScdException(e);
         }
     }
 
@@ -102,7 +102,7 @@ public class I2CMode implements Mode {
      * @return float array with CO2 (index 0), temperature (index 1) adm humidity (index 2).
      */
     @Override
-    public float[] getMeasurement() throws CsdException {
+    public float[] getMeasurement() throws ScdException {
 
         float[] meas = new float[3];
         I2CMessage message = Factory.readDataMessage(MEASUREMENT);
@@ -116,20 +116,21 @@ public class I2CMode implements Mode {
 
             return meas;
         } catch (IOException e) {
-            throw new CsdException(e);
+            throw new ScdException(e);
         }
     }
 
     @Override
-    public String getFirmwareVersion() throws CsdException {
+    public String getFirmwareVersion() throws ScdException {
         I2CMessage message = Factory.readMessage(FIRMWARE);
         try {
             message.exec(i2cDevice);
             short v = message.getNextShort();
+            System.out.println(v);
             return Integer.toHexString((v >> 2) & 0xFF)+"."
                     + Integer.toHexString(v & 0x00FF);
         } catch (IOException e) {
-            throw new CsdException(e);
+            throw new ScdException(e);
         }
     }
 
@@ -139,12 +140,12 @@ public class I2CMode implements Mode {
      * @param pressureCompensation
      */
     @Override
-    public void start(int pressureCompensation) throws CsdException {
+    public void start(int pressureCompensation) throws ScdException {
         I2CMessage message = Factory.writeMessage(TRIGGER_START, pressureCompensation);
         try {
             message.exec(i2cDevice);
         } catch (IOException e) {
-            throw new CsdException(e);
+            throw new ScdException(e);
         }
     }
 
@@ -152,12 +153,12 @@ public class I2CMode implements Mode {
      * Stop continuous measurement.
      */
     @Override
-    public void stop() throws CsdException {
+    public void stop() throws ScdException {
         I2CMessage message = Factory.writeMessage(TRIGGER_STOP);
         try {
             message.exec(i2cDevice);
         } catch (IOException e) {
-            throw new CsdException(e);
+            throw new ScdException(e);
         }
     }
 
@@ -165,12 +166,12 @@ public class I2CMode implements Mode {
      * Continuous automatic self-calibration can be
      * (de-)activated with the following command.
      */
-    public void selfCalibration(boolean active) throws CsdException {
+    public void selfCalibration(boolean active) throws ScdException {
         I2CMessage message = Factory.writeMessage(SELF_CALIBRATION, active?1:0);
         try {
             message.exec(i2cDevice);
         } catch (IOException e) {
-            throw new CsdException(e);
+            throw new ScdException(e);
         }
     }
 
@@ -178,13 +179,13 @@ public class I2CMode implements Mode {
      * Get result if self-calibration is active or deactive.
      * @return true if active otherwise false
      */
-    public boolean isSelfCalibration() throws CsdException {
+    public boolean isSelfCalibration() throws ScdException {
         I2CMessage message = Factory.readMessage(SELF_CALIBRATION);
         try {
             message.exec(i2cDevice);
             return message.getNextShort()==1;
         } catch (IOException e) {
-            throw new CsdException(e);
+            throw new ScdException(e);
         }
     }
 
@@ -195,12 +196,12 @@ public class I2CMode implements Mode {
      * proximity to the SCD30 is available.
      * @param value
      */
-    public void setRecalibrationValue(int value) throws CsdException {
+    public void setRecalibrationValue(int value) throws ScdException {
         I2CMessage message = Factory.writeMessage(RECALIBRATION, value);
         try {
             message.exec(i2cDevice);
         } catch (IOException e) {
-            throw new CsdException(e);
+            throw new ScdException(e);
         }
     }
 
@@ -213,12 +214,12 @@ public class I2CMode implements Mode {
      * of the device into the sensor.
      * @param offset
      */
-    public void setTemperatureOffset(int offset) throws CsdException {
+    public void setTemperatureOffset(int offset) throws ScdException {
         I2CMessage message = Factory.writeMessage(TEMP_OFFSET, offset);
         try {
             message.exec(i2cDevice);
         } catch (IOException e) {
-            throw new CsdException(e);
+            throw new ScdException(e);
         }
     }
 
@@ -226,13 +227,13 @@ public class I2CMode implements Mode {
      * Get temperature offset.
      * @return temperature offset
      */
-    public int getTemperatureOffset() throws CsdException {
+    public int getTemperatureOffset() throws ScdException {
         I2CMessage message = Factory.readMessage(TEMP_OFFSET);
         try {
             message.exec(i2cDevice);
             return message.getNextShort();
         } catch (IOException e) {
-            throw new CsdException(e);
+            throw new ScdException(e);
         }
     }
 
@@ -242,12 +243,12 @@ public class I2CMode implements Mode {
      * deviations due to altitude by using the following command.
      * @param altitudeLevel
      */
-    public void setAltitudeCompensation(int altitudeLevel) throws CsdException {
+    public void setAltitudeCompensation(int altitudeLevel) throws ScdException {
         I2CMessage message = Factory.writeMessage(ALTITUDE, altitudeLevel);
         try {
             message.exec(i2cDevice);
         } catch (IOException e) {
-            throw new CsdException(e);
+            throw new ScdException(e);
         }
     }
 
@@ -255,13 +256,13 @@ public class I2CMode implements Mode {
      * Get altitude level.
      * @return altitude level
      */
-    public int getAltitudeCompensation() throws CsdException {
+    public int getAltitudeCompensation() throws ScdException {
          I2CMessage message = Factory.readMessage(ALTITUDE);
         try {
             message.exec(i2cDevice);
             return message.getNextShort();
         } catch (IOException e) {
-            throw new CsdException(e);
+            throw new ScdException(e);
         }
     }
 
@@ -274,12 +275,12 @@ public class I2CMode implements Mode {
      * to every measurement by default. This includes previously set reference
      * values from ASC or FRC as well as temperature offset values last setting.
      */
-    public void softReset() throws CsdException {
+    public void softReset() throws ScdException {
         I2CMessage message = Factory.writeMessage(SOFT_RESET);
         try {
             message.exec(i2cDevice);
         } catch (IOException e) {
-            throw new CsdException(e);
+            throw new ScdException(e);
         }
     }
 

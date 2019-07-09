@@ -1,6 +1,7 @@
 package cz.zerog.scd30;
 
 import cz.zerog.scd30.Event.Type;
+import org.jetbrains.annotations.NotNull;
 
 public class SCD30 {
 
@@ -25,7 +26,7 @@ public class SCD30 {
     private volatile float humidity;
     private volatile float temperature;
 
-    public SCD30(Mode mode) {
+    public SCD30(@NotNull final Mode mode) {
         this.mode = mode;
     }
 
@@ -46,7 +47,9 @@ public class SCD30 {
     }
 
     public void start() {
+
         if (thread != null) {
+            System.out.println("thread is not null");
             return;
         }
 
@@ -65,13 +68,14 @@ public class SCD30 {
                 }
 
                 try {
+
                     if (!mode.isDataReady()) {
                         continue;
                     }
 
                     measurement();
 
-                } catch (CsdException e) {
+                } catch (ScdException e) {
                     //fixme print into log
                     e.printStackTrace();
                 }
@@ -102,18 +106,21 @@ public class SCD30 {
 
     public void setMeasurementInterval(int interval)  {
 
-        CsdException exception = null;
+        ScdException exception = null;
 
         for (int i = 0; i < MAX_ATTEMPTS; i++) {
 
             try {
                 mode.setInterval(interval);
 
-                if (mode.getInterval() == interval) {
-                    return;
+                int getInterval = mode.getInterval();
+                if (getInterval == interval) {
+                    return; //OK
+                } else {
+                    throw new ScdException("Set interval: "+interval+" but SCD30 return "+getInterval+" interval.");
                 }
 
-            } catch (CsdException e) {
+            } catch (ScdException e) {
                 exception = e;
             }
         }
@@ -123,19 +130,16 @@ public class SCD30 {
 
     public int getMeasurementInterval() {
 
-        CsdException exception = null;
+        ScdException exception = null;
 
         for (int i = 0; i < MAX_ATTEMPTS; i++) {
 
             try {
 
                 int interval = mode.getInterval();
+                return interval;
 
-                if (interval > -1) {
-                    return interval;
-                }
-
-            } catch (CsdException e) {
+            } catch (ScdException e) {
                 exception = e;
             }
         }

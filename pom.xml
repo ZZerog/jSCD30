@@ -19,7 +19,7 @@
   <dependencies>
 
       <!--
-      GPIO and hw things
+      Raspberry I2C
       https://mvnrepository.com/artifact/com.pi4j/pi4j-core
       -->
       <dependency>
@@ -28,6 +28,26 @@
           <version>1.2</version>
       </dependency>
 
+      <dependency>
+          <groupId>junit</groupId>
+          <artifactId>junit</artifactId>
+          <version>4.12</version>
+          <scope>test</scope>
+      </dependency>
+
+      <!-- https://mvnrepository.com/artifact/org.mockito/mockito-all -->
+      <dependency>
+          <groupId>org.mockito</groupId>
+          <artifactId>mockito-all</artifactId>
+          <version>1.10.19</version>
+          <scope>test</scope>
+      </dependency>
+
+      <dependency>
+          <groupId>org.jetbrains</groupId>
+          <artifactId>annotations</artifactId>
+          <version>RELEASE</version>
+      </dependency>
 
   </dependencies>
 

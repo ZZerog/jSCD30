@@ -1,7 +1,7 @@
 package cz.zerog.scd30.i2cbus;
 
 import com.pi4j.io.i2c.I2CDevice;
-import cz.zerog.scd30.CsdException;
+import cz.zerog.scd30.ScdException;
 import cz.zerog.scd30.Mode;
 import cz.zerog.scd30.crc.AlgoParams;
 import cz.zerog.scd30.crc.CrcCalculator;
@@ -20,7 +20,7 @@ public class I2CMessage {
     private final int writeLoad; //parameter
     private final short message; //address
 
-    //index if next short result
+    //index of 'next short' result
     private int resultIndex = 0;
 
 
@@ -103,7 +103,7 @@ public class I2CMessage {
      *
      * @param buffer input buffer
      * @return true if a crc is correct through whole buffer otherwise false
-     * @throws CsdException when crc8 is not correct!
+     * @throws ScdException when crc8 is not correct!
      */
     private void crcCheck(byte[] buffer) {
 
@@ -116,7 +116,7 @@ public class I2CMessage {
                 String expected = Integer.toHexString((int) crc8.calc(buffer,i,2));
                 String was = Integer.toHexString(buffer[i+2] & 0xFF);
 
-                throw new CsdException("CRC is not correct! Data: "+input+". Expected: "+expected+", Was:"+was);
+                throw new ScdException("CRC is not correct! Data: ["+input+"]. Expected crc8: "+expected+", Was crc8:"+was);
             }
         }
     }

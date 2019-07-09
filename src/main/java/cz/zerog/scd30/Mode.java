@@ -33,6 +33,10 @@ public interface Mode {
     void softReset();
 
     static String getHumanMessage(byte[] bytes) {
+        return getHumanMessage(bytes, 0, bytes.length);
+    }
+
+    static String getHumanMessage(byte[] bytes, int offset, int length) {
 
         if(bytes==null) {
             return "null";
@@ -40,7 +44,7 @@ public interface Mode {
 
         StringBuilder sb = new StringBuilder();
 
-        for (int i = 0; i < bytes.length; i++) {
+        for (int i = offset; i < Math.min(bytes.length, length); i++) {
             String hex = Integer.toHexString(bytes[i] & 0xFF).toUpperCase().trim();
             sb.append(new String(new char[2 - hex.length()]).replace('\0', '0'))
                     .append(hex)
@@ -52,9 +56,5 @@ public interface Mode {
         }
 
         return sb.append(" (").append(bytes.length).append(")").toString();
-    }
-
-    static String getHumanMessage(byte[] buffer, int offset, int length) {
-        return null;
     }
 }
