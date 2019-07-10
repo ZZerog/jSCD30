@@ -1,7 +1,10 @@
 package cz.zerog.scd30;
 
 import cz.zerog.scd30.Event.Type;
+import cz.zerog.scd30.i2cbus.I2CMode;
 import org.jetbrains.annotations.NotNull;
+
+import java.io.IOException;
 
 public class SCD30 {
 
@@ -57,9 +60,10 @@ public class SCD30 {
 
             mode.start(pressureCompensation);
 
-            int interval = getMeasurementInterval() + 100;
+            int interval = (getMeasurementInterval()*1000) + 100;
 
-            while (!Thread.interrupted()) {
+
+            main:while (!Thread.interrupted()) {
 
                 try {
                     Thread.sleep(interval);
@@ -67,17 +71,27 @@ public class SCD30 {
                     return;
                 }
 
-                try {
+                for (int i = 0; i < MAX_ATTEMPTS; i++) {
 
-                    if (!mode.isDataReady()) {
-                        continue;
+                    try {
+
+                        if (!mode.isDataReady()) {
+                            continue main;
+                        }
+
+                        measurement();
+                        continue main;
+
+                    } catch (ScdException e) {
+                        if(i == MAX_ATTEMPTS) {
+                            e.printStackTrace();
+                        }
+                        try {
+                            Thread.sleep(200);
+                        } catch (InterruptedException e1) {
+                            e1.printStackTrace();
+                        }
                     }
-
-                    measurement();
-
-                } catch (ScdException e) {
-                    //fixme print into log
-                    e.printStackTrace();
                 }
             }
         });
@@ -87,6 +101,12 @@ public class SCD30 {
         thread.start();
     }
 
+    /**
+     * Stop measurement thread and send
+     * stop command to SCD30 sensor.
+     *
+     * @see I2CMode#stop()
+     */
     public void stop() {
         if (thread != null) {
             thread.interrupt();

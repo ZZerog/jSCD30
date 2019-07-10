@@ -12,6 +12,7 @@ import java.io.IOException;
 public class I2CMode implements Mode {
 
     private I2CDevice i2cDevice;
+    private I2CBus i2cBus;
 
     /**
      * I2C bus address of CSD30
@@ -37,9 +38,8 @@ public class I2CMode implements Mode {
 
 
     public I2CMode(int busIndex) throws IOException, I2CFactory.UnsupportedBusNumberException {
-        I2CBus i2cBus = I2CFactory.getInstance(busIndex);
+        i2cBus = I2CFactory.getInstance(busIndex);
         i2cDevice = i2cBus.getDevice(DEVICE_ADDRESS);
-        System.out.println("init OK");
     }
 
 
@@ -126,9 +126,8 @@ public class I2CMode implements Mode {
         try {
             message.exec(i2cDevice);
             short v = message.getNextShort();
-            System.out.println(v);
-            return Integer.toHexString((v >> 2) & 0xFF)+"."
-                    + Integer.toHexString(v & 0x00FF);
+            return ((v >> 2) & 0xFF)+"."
+                    + (v & 0x00FF);
         } catch (IOException e) {
             throw new ScdException(e);
         }
@@ -154,8 +153,8 @@ public class I2CMode implements Mode {
      */
     @Override
     public void stop() throws ScdException {
-        I2CMessage message = Factory.writeMessage(TRIGGER_STOP);
         try {
+            I2CMessage message = Factory.writeMessage(TRIGGER_STOP);
             message.exec(i2cDevice);
         } catch (IOException e) {
             throw new ScdException(e);

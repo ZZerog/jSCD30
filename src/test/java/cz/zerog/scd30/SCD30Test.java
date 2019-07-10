@@ -62,7 +62,7 @@ public class SCD30Test {
         //prepare mock Mode
         Mode mockMode = mock(Mode.class);
         doNothing().when(mockMode).start(anyInt());
-        when(mockMode.getInterval()).thenReturn(1000);
+        when(mockMode.getInterval()).thenReturn(1);
         doNothing().when(mockMode).setInterval(anyInt());
         when(mockMode.isDataReady()).thenReturn(true);
         when(mockMode.getMeasurement()).thenReturn(new float[]{(float) 1.23, (float) 12.3, (float) 123.0});
