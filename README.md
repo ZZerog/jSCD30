@@ -1,18 +1,43 @@
 # jSCD30
 
-<img align="right" width="300" height="200" src="https://cz.mouser.com/images/marketingid/2018/df/187534792_Sensirion_SCD30SensorModule.jpg">Simple java **RaspberryPi** driver for the **SCD30** CO2 sensor. 
+<img align="right" width="300" height="200" src="https://cz.mouser.com/images/marketingid/2018/df/187534792_Sensirion_SCD30SensorModule.jpg">Simple java driver for the **SCD30** CO2 (temparature and humidity) sensor. Is tested on **RaspberryPi 3B+** and uses the I2C BUS.
 
 ### TODO LIST
 - [ ] Code completion
 - [ ] Add logging fasade (as SLF4J)
 - [ ] Maven page (mvn page)
-- [ ] Unit testing
-- [ ] Create examples
+- [x] Unit testing
+- [x] Create examples
 
 
-### Getting Started
+### Usage
+```java
+        //init with I2C_BUS. RPi3 B+ => BUS_1;
+        SCD30 scd30 = new SCD30(new I2CMode(I2CBus.BUS_1));
 
-Simple java driver for the **SCD30** CO2 (temparature and humidity) sensor. Is tested on **RaspberryPi 3B+** and uses the I2C BUS.
+        scd30.setEventListener(event -> {
+            switch (event.getType()) {
+
+                case CO2:
+                    System.out.println("CO2: " + event.getValue() + " ppm");
+                    break;
+
+                case TEMP:
+                    System.out.println("Temperature: " + event.getValue() + " °C");
+                    break;
+
+                case HUMID:
+                    System.out.println("Humidity: " + event.getValue() + " %");
+                    break;
+            }
+        });
+
+        System.out.println("SCD30 firmware version: "+scd30.getFirmwareVersion());
+
+        scd30.start();
+
+```
+more at example package
 
 ### Dependencies
 * www.pi4j.com
