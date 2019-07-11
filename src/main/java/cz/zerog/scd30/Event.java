@@ -18,7 +18,7 @@ public class Event {
         return type;
     }
 
-    enum Type {
+    public enum Type {
         CO2, HUMID, TEMP;
     }
 }

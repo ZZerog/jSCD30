@@ -1,5 +1,5 @@
 package cz.zerog.scd30;
 
-interface EventListener {
+public interface SCD30EventListener {
     void event(Event event);
 }

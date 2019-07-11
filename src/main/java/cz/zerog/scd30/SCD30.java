@@ -4,17 +4,15 @@ import cz.zerog.scd30.Event.Type;
 import cz.zerog.scd30.i2cbus.I2CMode;
 import org.jetbrains.annotations.NotNull;
 
-import java.io.IOException;
-
 public class SCD30 {
 
     public static int MAX_ATTEMPTS = 3;
 
-    private EventListener eventListener = null;
+    private SCD30EventListener SCD30EventListener = null;
 
-    private float co2Threshold;
-    private float humidityThreshold;
-    private float temperatureThreshold;
+    private float co2Threshold = 0.1f;
+    private float humidityThreshold = 0.1f;
+    private float temperatureThreshold = 0.1f;
 
     // value 0 == pressure compensation is disable
     private int pressureCompensation = 0;
@@ -33,8 +31,8 @@ public class SCD30 {
         this.mode = mode;
     }
 
-    public void setEventListener(EventListener eventListener) {
-        this.eventListener = eventListener;
+    public void setEventListener(SCD30EventListener SCD30EventListener) {
+        this.SCD30EventListener = SCD30EventListener;
     }
 
     public float getCO2() {
@@ -175,17 +173,17 @@ public class SCD30 {
         float[] load = mode.getMeasurement();
 
         //event handle
-        if(eventListener!=null) {
+        if(SCD30EventListener !=null) {
             if(Math.abs(load[0]-co2)>co2Threshold) {
-                eventListener.event(new Event(Type.CO2, load[0]));
+                SCD30EventListener.event(new Event(Type.CO2, load[0]));
             }
 
-            if(Math.abs(load[1]-humidity)>humidityThreshold) {
-                eventListener.event(new Event(Type.HUMID, load[1]));
+            if(Math.abs(load[2]-humidity)>humidityThreshold) {
+                SCD30EventListener.event(new Event(Type.HUMID, load[2]));
             }
 
-            if(Math.abs(load[2]-temperature)>temperatureThreshold) {
-                eventListener.event(new Event(Type.TEMP, load[2]));
+            if(Math.abs(load[1]-temperature)>temperatureThreshold) {
+                SCD30EventListener.event(new Event(Type.TEMP, load[1]));
             }
         }
 

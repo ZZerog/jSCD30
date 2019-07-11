@@ -7,6 +7,9 @@ import cz.zerog.scd30.i2cbus.I2CMode;
 
 import java.io.IOException;
 
+/**
+ * The simplest examples of using this lib.
+ */
 public class Simplest {
 
     public static void main(String[] args) throws IOException, I2CFactory.UnsupportedBusNumberException, InterruptedException {
