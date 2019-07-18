@@ -66,8 +66,7 @@ public class ByEvent {
 
         System.out.println("Enter for exit");
 
-        Scanner scanner = new Scanner(System.in)
-                ;
+        Scanner scanner = new Scanner(System.in);
         scanner.nextLine();
     }
 }
