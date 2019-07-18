@@ -1,0 +1,26 @@
+-classpath
+'/home/zerog/work/zerog/git/jSCD30/target/classes:/home/zerog/work/zerog/git/jSCD30/target/test-classes:/home/zerog/.m2/repository/org/jetbrains/annotations/17.0.0/annotations-17.0.0.jar:/home/zerog/.m2/repository/org/mockito/mockito-all/1.10.19/mockito-all-1.10.19.jar:/home/zerog/.m2/repository/org/hamcrest/hamcrest-core/1.3/hamcrest-core-1.3.jar:/home/zerog/.m2/repository/com/pi4j/pi4j-core/1.2/pi4j-core-1.2.jar:/home/zerog/.m2/repository/junit/junit/4.12/junit-4.12.jar'
+-encoding
+'UTF-8'
+-protected
+-sourcepath
+'/home/zerog/work/zerog/git/jSCD30/src/test/java'
+-author
+-bottom
+'Copyright &#169; 2019 jSCD30. All rights reserved.'
+-charset
+'UTF-8'
+-d
+'/home/zerog/work/zerog/git/jSCD30/target/site/testapidocs'
+-docencoding
+'UTF-8'
+-doctitle
+'jSCD30 1.0-SNAPSHOT Test API'
+-link
+'../apidocs'
+-linkoffline
+'http://docs.oracle.com/javase/8/docs/api' '/home/zerog/work/zerog/git/jSCD30/target/javadoc-bundle-options'
+-use
+-version
+-windowtitle
+'jSCD30 1.0-SNAPSHOT Test API'
