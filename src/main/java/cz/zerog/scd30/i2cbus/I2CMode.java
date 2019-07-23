@@ -68,7 +68,7 @@ public class I2CMode implements Mode {
     /**
      * Sets the interval used by the SCD30 sensor to measure in continuous measurement mode.
      *
-     * @param interval
+     * @param interval in second
      * @throws ScdException
      */
     @Override
