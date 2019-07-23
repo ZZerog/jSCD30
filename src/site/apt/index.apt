@@ -1,0 +1,38 @@
+jSCD30
+
+    Simple java driver for the <<SCD30>> CO2 (temperature and humidity) sensor. The SCD30 is tested on <<RaspberryPi 3B+>> and uses the I2C BUS.
+
+* About SCD30
+
+    Sensirion SCD30 Sensor Module uses NDIR CO2 sensor technology to sense CO2 and has an integrated temperature and humidity sensor. Ambient humidity and temperature can be measured by monitoring and compensating of external heat sources without the need for additional components. The small module height allows easy integration into different applications. The SCD30 features dual-channel detection for superior stability and ±30ppm + 3% accuracy. More at {{{https://eu.mouser.com/new/sensirion/sensirion-scd30/}SCD30 home page}}
+
+* Supported
+
+	SCD30 supported I2C and Modbus protocol. I2C is implemented but Modbus does't (version 1.0). But library is ready to Modbus extension!
+
+* Dependencies
+
+    jSCD30 depend on pi4j version 1.2
+
+* Links
+
+    * {{{https://pi4j.com/1.2/usage.html}Pi4j library}}
+
+    * {{{https://eu.mouser.com/new/sensirion/sensirion-scd30/}Sensirion scd30 home}}
+
+    * {{{https://eu.mouser.com/pdfDocs/CD_AN_SCD30_Interface_Description_D1.pdf}SCD30 Interface Description (pdf)}}
+
+
+* Contributions
+
+	All types of contributions are welcome. This is a non-commercial project and is written in my free time. If you have a remark, questions, would like to report bugs or anything else, please use {{{http://github.com/ZZerog/jSMS4Pi}GitHub}} or send me an {{{./team-list.html}email}}. 
+
+* News
+
+	
+* Releases
+
+	2019-07-21 :: 1.0.1-SNAPSHOT
+ 	
+ 	*  Initial ALPHA release
+

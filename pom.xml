@@ -6,10 +6,13 @@
     <groupId>cz.zerog</groupId>
     <artifactId>jSCD30</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>jSCD30</name>
+
     <packaging>jar</packaging>
     <inceptionYear>2019</inceptionYear>
-    <url></url>
+
+    <name>jSCD30</name>
+    <description>Simple java driver for the SCD30 CO2 sensor</description>
+    <url>https://zzerog.github.io/jSCD30/</url>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -25,18 +28,8 @@
         <developer>
             <name>Václav Burda</name>
             <email>burda.vaclav@gmail.com</email>
-            <roles>
-                <role>architect</role>
-                <role>developer</role>
-            </roles>
             <timezone>Europe/Prague</timezone>
-        </developer>
-        <developer>
-            <name>Marcela Novotná</name>
-            <roles>
-                <role>text corrector</role>
-            </roles>
-            <timezone>America/New_York</timezone>
+            <organizationUrl>http://www.sonatype.com</organizationUrl>
         </developer>
     </developers>
 
@@ -49,6 +42,10 @@
         </license>
     </licenses>
 
+    <scm>
+        <url>https://github.com/ZZerog/jSCD30</url>
+        <connection>scm:git:https://github.com/ZZerog/jSCD30.git</connection>
+    </scm>
 
     <organization>
         <name>jSCD30</name>
@@ -165,6 +162,22 @@
                         </plugin>
                     </reportPlugins>
                 </configuration>
+            </plugin>
+
+            <!-- Sign artifacts with GnuPG -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
 
             <plugin>
