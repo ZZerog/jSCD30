@@ -8,11 +8,11 @@ jSCD30
 
 * Supported
 
-	SCD30 supported I2C and Modbus protocol. I2C is implemented but Modbus does't (version 1.0). But library is ready to Modbus extension!
+	SCD30 supported I2C and Modbus protocol. I2C is implemented but Modbus is not (version 1.0). But library is ready for Modbus extension!
 
 * Dependencies
 
-    jSCD30 depend on pi4j version 1.2
+    jSCD30 depends on pi4j version 1.2
 
 * Links
 
